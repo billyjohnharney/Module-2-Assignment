@@ -173,10 +173,18 @@
   }
 }
 
-/* Selected — lifts off background, 5% scale, prominent shadow */
+/* Selected — lifts off background, 5% scale, prominent shadow.
+   Switches to a block grid so the two halves + mid-line fill the card. */
 .tile--selected {
   transform: translateY(-4px) scale(1.05);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.14);
+  /* Override flex so we can use a row-based grid for the flip-clock halves */
+  display: grid;
+  grid-template-rows: 1fr 1px 1fr;
+  padding: 0;
+  overflow: hidden;
+  /* 3-D perspective context for the flip flap */
+  perspective: 600px;
 }
 
 .tile--selected.tile--vowel,
@@ -184,6 +192,113 @@
 .tile--selected.tile--digraph {
   background: #ffffff;
   color: #000000;
+}
+
+/* ── Flip-clock halves ───────────────────────────────────────────────────── */
+
+/* Top half — empty at rest; acts as static backdrop during flip-down */
+.tile__top {
+  display: flex;
+  align-items: flex-end;       /* content hangs from the centre line */
+  justify-content: center;
+  padding-bottom: 3px;
+  background: #f0f0f0;         /* slightly dimmer to signal "empty" */
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+
+/* Horizontal dividing line */
+.tile__mid-line {
+  background: #b0b0b0;
+  z-index: 3;
+}
+
+/* Bottom half — where the current phonic lives (smaller font) */
+.tile__bottom {
+  display: flex;
+  align-items: flex-start;     /* content sits just below the centre line */
+  justify-content: center;
+  padding-top: 3px;
+  background: #ffffff;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Shared label style used inside the halves */
+.tile__half-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Flip flap ────────────────────────────────────────────────────────────── */
+
+.tile__flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Children live in 3-D space */
+  transform-style: preserve-3d;
+  z-index: 10;
+}
+
+/* Flap that starts covering the bottom half and rotates upward */
+.tile__flap--up {
+  top: 50%;
+  height: 50%;
+  transform-origin: top center;
+  border-radius: 0 0 6px 6px;
+  animation: flip-up 0.32s ease-in-out forwards;
+}
+
+/* Flap that starts covering the top half and rotates downward */
+.tile__flap--down {
+  top: 0;
+  height: 50%;
+  transform-origin: bottom center;
+  border-radius: 6px 6px 0 0;
+  animation: flip-down 0.32s ease-in-out forwards;
+}
+
+/* Front and back faces of the flap */
+.tile__flap-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Back face is pre-rotated 180° so it appears correct when the flap completes */
+.tile__flap-back {
+  transform: rotateX(180deg);
+}
+
+@keyframes flip-up {
+  from { transform: rotateX(0deg); }
+  to   { transform: rotateX(-180deg); }
+}
+
+@keyframes flip-down {
+  from { transform: rotateX(0deg); }
+  to   { transform: rotateX(180deg); }
+}
+
+/* ── Deselect — reverse lift animation ───────────────────────────────────── */
+.tile--deselecting {
+  animation: tile-deselect 0.25s ease-in forwards;
+}
+
+@keyframes tile-deselect {
+  from { transform: translateY(-4px) scale(1.05); }
+  to   { transform: translateY(0)    scale(1);    }
 }
 
 /* Locked */

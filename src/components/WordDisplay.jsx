@@ -10,8 +10,9 @@ import { getValidSwaps, trickyWords } from '../data/words';
  *   word           – string (the assembled word)
  *   selectedIndex  – number | null
  *   onSelectIndex  – (i: number) => void
+ *   onSwap         – ({ phoneme, word }) => void  (committed from flip)
  */
-export default function WordDisplay({ phonemes, word, selectedIndex, onSelectIndex }) {
+export default function WordDisplay({ phonemes, word, selectedIndex, onSelectIndex, onSwap }) {
   const isTricky = trickyWords.has(word);
 
   return (
@@ -20,14 +21,17 @@ export default function WordDisplay({ phonemes, word, selectedIndex, onSelectInd
         {phonemes.map((phoneme, i) => {
           const swaps = getValidSwaps(phonemes, i);
           const locked = swaps.length === 0;
+          const isSelected = selectedIndex === i;
           return (
             <Fragment key={i}>
               {i > 0 && <div className="tile-divider" aria-hidden="true" />}
               <PhonemeTile
                 phoneme={phoneme}
-                selected={selectedIndex === i}
+                selected={isSelected}
                 locked={locked}
                 onClick={() => !locked && onSelectIndex(i)}
+                swaps={isSelected ? swaps : undefined}
+                onSwap={isSelected ? onSwap : undefined}
               />
             </Fragment>
           );

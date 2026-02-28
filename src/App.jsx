@@ -84,6 +84,7 @@ export default function App() {
               word={currentEntry.word}
               selectedIndex={selectedIndex}
               onSelectIndex={handleSelectIndex}
+              onSwap={handleSwap}
             />
 
             {selectedIndex !== null && (
