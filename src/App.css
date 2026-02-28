@@ -1,0 +1,308 @@
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 4rem;
+}
+
+.app-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #1a1a2e;
+  margin: 0 0 2rem;
+  text-align: center;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ── Phoneme count selector ──────────────────────────────────────────────── */
+.count-selector {
+  text-align: center;
+}
+
+.count-selector__label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.count-selector__buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.count-btn {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  border: 2px solid #c9d0e8;
+  background: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3a3a5c;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.count-btn:hover:not(:disabled) {
+  background: #e6eaff;
+  border-color: #6c6fff;
+  transform: translateY(-2px);
+}
+
+.count-btn--active {
+  background: #5c5fef;
+  border-color: #5c5fef;
+  color: #fff;
+}
+
+.count-btn--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Word display ─────────────────────────────────────────────────────────── */
+.word-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tricky-badge {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #7a5700;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+}
+
+.tile-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tile-row--tricky .phoneme-tile {
+  border-style: dashed;
+}
+
+.word-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #3a3a5c;
+  letter-spacing: 0.02em;
+}
+
+/* ── Phoneme tiles ────────────────────────────────────────────────────────── */
+.phoneme-tile {
+  position: relative;
+  min-width: 3rem;
+  height: 3.4rem;
+  padding: 0 0.6rem;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+/* Vowel tiles – warm amber */
+.tile--vowel {
+  background: #fff3cd;
+  border-color: #f5c842;
+  color: #7a5700;
+}
+.tile--vowel:hover:not(.tile--locked) {
+  background: #ffe99a;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(245, 200, 66, 0.4);
+}
+
+/* Consonant tiles – soft blue */
+.tile--consonant {
+  background: #dbeafe;
+  border-color: #60a5fa;
+  color: #1e3a8a;
+}
+.tile--consonant:hover:not(.tile--locked) {
+  background: #bfdbfe;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+}
+
+/* Digraph tiles – soft purple */
+.tile--digraph {
+  background: #ede9fe;
+  border-color: #a78bfa;
+  color: #4c1d95;
+}
+.tile--digraph:hover:not(.tile--locked) {
+  background: #ddd6fe;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+}
+
+/* Selected state */
+.tile--selected {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 0 0 3px #5c5fef, 0 6px 16px rgba(92, 95, 239, 0.35);
+}
+.tile--selected.tile--vowel     { background: #ffe99a; }
+.tile--selected.tile--consonant { background: #bfdbfe; }
+.tile--selected.tile--digraph   { background: #ddd6fe; }
+
+/* Locked state */
+.tile--locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.lock-icon {
+  font-size: 0.7rem;
+}
+
+/* ── Swap panel ──────────────────────────────────────────────────────────── */
+.swap-panel {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #dde2f5;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(92, 95, 239, 0.12);
+}
+
+.swap-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.swap-panel__close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #999;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+}
+.swap-panel__close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.swap-panel__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.swap-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  transition: transform 0.12s, box-shadow 0.12s;
+  min-width: 3.5rem;
+}
+
+.swap-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.swap-option--vowel    { background: #fff3cd; border-color: #f5c842; color: #7a5700; }
+.swap-option--consonant{ background: #dbeafe; border-color: #60a5fa; color: #1e3a8a; }
+.swap-option--digraph  { background: #ede9fe; border-color: #a78bfa; color: #4c1d95; }
+
+.swap-option__phoneme {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.swap-option__word {
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+/* ── Word actions ─────────────────────────────────────────────────────────── */
+.word-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn--speak {
+  background: #5c5fef;
+  color: #fff;
+  border-color: #5c5fef;
+}
+.btn--speak:hover {
+  background: #4749d4;
+}
+
+.btn--new {
+  background: #fff;
+  color: #3a3a5c;
+  border-color: #c9d0e8;
+}
+.btn--new:hover {
+  border-color: #5c5fef;
+  color: #5c5fef;
+}
+
+/* ── Prompt ──────────────────────────────────────────────────────────────── */
+.prompt {
+  color: #888;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
