@@ -5,13 +5,14 @@
   flex-direction: column;
   align-items: center;
   padding: 1.5rem 1rem 5rem;
+  background: #ebebeb;
 }
 
 .app-header h1 {
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: #1a1a2e;
+  color: #1a1a1a;
   margin: 0 0 1.5rem;
   text-align: center;
 }
@@ -48,31 +49,31 @@
 }
 
 .count-btn {
-  /* 48×48px — above the 44px touch minimum */
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  border: 2px solid #c9d0e8;
+  border: 2px solid #ccc;
   background: #fff;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #3a3a5c;
-  transition: background 0.15s, border-color 0.15s;
+  color: #1a1a1a;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 @media (hover: hover) {
   .count-btn:hover:not(:disabled) {
-    background: #e6eaff;
-    border-color: #6c6fff;
+    background: #f5f5f5;
+    border-color: #999;
     transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
   }
 }
 
 .count-btn--active {
-  background: #5c5fef;
-  border-color: #5c5fef;
+  background: #1a1a1a;
+  border-color: #1a1a1a;
   color: #fff;
 }
 
@@ -90,126 +91,122 @@
   width: 100%;
 }
 
-.tricky-badge {
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-  color: #7a5700;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0.25rem 0.8rem;
-  border-radius: 999px;
-}
-
+/* Tile row — no gap; spacing comes from tile padding + divider margins */
 .tile-row {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
-.tile-row--tricky .phoneme-tile {
-  border-style: dashed;
+/* Vertical 1px divider between cards — 30% grey */
+.tile-divider {
+  width: 1px;
+  height: 3rem;
+  background: #4d4d4d;
+  flex-shrink: 0;
+  margin: 0 0.45rem;
+}
+
+/* Word text + tricky label grouped together */
+.word-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
 }
 
 .word-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #3a3a5c;
+  color: #1a1a1a;
   letter-spacing: 0.02em;
+}
+
+/* "Tricky" — bold, 8 px, centred below the word */
+.tricky-label {
+  font-size: 8px;
+  font-weight: 700;
+  text-align: center;
+  color: #555;
+  line-height: 1;
 }
 
 /* ── Phoneme tiles ────────────────────────────────────────────────────────── */
 .phoneme-tile {
   position: relative;
-  /* ~52px — comfortably above the 44px touch minimum */
-  min-width: 3.25rem;
-  height: 3.25rem;
-  padding: 0 0.65rem;
-  border-radius: 10px;
-  border: 2px solid transparent;
-  font-size: 1.2rem;
+  /* Wide enough for the letter + padding; tall for a flip-clock card feel */
+  min-width: 3.5rem;
+  height: 4.5rem;
+  padding: 0 1.1rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+  color: #000;
+  background: #ffffff;
+  /* Resting shadow — subtle depth on the grey background */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: transform 0.12s, box-shadow 0.12s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.25rem;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.02em;
 }
 
-/* Vowel tiles – warm amber */
-.tile--vowel {
-  background: #fff3cd;
-  border-color: #f5c842;
-  color: #7a5700;
-}
-@media (hover: hover) {
-  .tile--vowel:hover:not(.tile--locked) {
-    background: #ffe99a;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(245, 200, 66, 0.4);
-  }
-}
-
-/* Consonant tiles – soft blue */
-.tile--consonant {
-  background: #dbeafe;
-  border-color: #60a5fa;
-  color: #1e3a8a;
-}
-@media (hover: hover) {
-  .tile--consonant:hover:not(.tile--locked) {
-    background: #bfdbfe;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
-  }
-}
-
-/* Digraph tiles – soft purple */
+/* All tile types — white card, black text (no colour coding) */
+.tile--vowel,
+.tile--consonant,
 .tile--digraph {
-  background: #ede9fe;
-  border-color: #a78bfa;
-  color: #4c1d95;
+  background: #ffffff;
+  color: #000000;
 }
+
 @media (hover: hover) {
-  .tile--digraph:hover:not(.tile--locked) {
-    background: #ddd6fe;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+  .phoneme-tile:hover:not(.tile--locked) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18), 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* Selected state */
+/* Selected — lifts off background, 5% scale, prominent shadow */
 .tile--selected {
-  transform: translateY(-4px) scale(1.08);
-  box-shadow: 0 0 0 3px #5c5fef, 0 6px 16px rgba(92, 95, 239, 0.35);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.14);
 }
-.tile--selected.tile--vowel     { background: #ffe99a; }
-.tile--selected.tile--consonant { background: #bfdbfe; }
-.tile--selected.tile--digraph   { background: #ddd6fe; }
 
-/* Locked state */
+.tile--selected.tile--vowel,
+.tile--selected.tile--consonant,
+.tile--selected.tile--digraph {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Locked */
 .tile--locked {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
+/* Material Icons lock — size matched to tile font */
 .lock-icon {
-  font-size: 0.7rem;
+  font-size: 1rem;
+  line-height: 1;
+  user-select: none;
 }
 
 /* ── Swap panel ──────────────────────────────────────────────────────────── */
 .swap-panel {
   width: 100%;
   background: #fff;
-  border: 1px solid #dde2f5;
-  border-radius: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 4px 20px rgba(92, 95, 239, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .swap-panel__header {
@@ -219,7 +216,7 @@
   margin-bottom: 0.75rem;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #666;
+  color: #555;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -228,8 +225,7 @@
   background: none;
   border: none;
   font-size: 1.1rem;
-  color: #999;
-  /* 44×44 tap target */
+  color: #888;
   width: 2.75rem;
   height: 2.75rem;
   display: flex;
@@ -239,6 +235,7 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+
 @media (hover: hover) {
   .swap-panel__close:hover {
     background: #f0f0f0;
@@ -252,15 +249,18 @@
   gap: 0.5rem;
 }
 
+/* Swap options — same white card style */
 .swap-option {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.2rem;
-  /* min 44px height */
   padding: 0.65rem 0.5rem;
-  border-radius: 10px;
-  border: 2px solid transparent;
+  border-radius: 6px;
+  border: none;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.12s, box-shadow 0.12s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -269,13 +269,16 @@
 @media (hover: hover) {
   .swap-option:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
   }
 }
 
-.swap-option--vowel    { background: #fff3cd; border-color: #f5c842; color: #7a5700; }
-.swap-option--consonant{ background: #dbeafe; border-color: #60a5fa; color: #1e3a8a; }
-.swap-option--digraph  { background: #ede9fe; border-color: #a78bfa; color: #4c1d95; }
+.swap-option--vowel,
+.swap-option--consonant,
+.swap-option--digraph {
+  background: #ffffff;
+  color: #000000;
+}
 
 .swap-option__phoneme {
   font-size: 1.1rem;
@@ -285,7 +288,7 @@
 .swap-option__word {
   font-size: 0.72rem;
   font-weight: 500;
-  opacity: 0.75;
+  color: #555;
 }
 
 /* ── Word actions ─────────────────────────────────────────────────────────── */
@@ -297,9 +300,8 @@
 }
 
 .btn {
-  /* min 44px height */
   padding: 0.75rem 1.5rem;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 2px solid transparent;
   font-size: 1rem;
   font-weight: 700;
@@ -313,34 +315,37 @@
 @media (hover: hover) {
   .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
 .btn--speak {
-  background: #5c5fef;
+  background: #1a1a1a;
   color: #fff;
-  border-color: #5c5fef;
+  border-color: #1a1a1a;
 }
+
 @media (hover: hover) {
-  .btn--speak:hover { background: #4749d4; }
+  .btn--speak:hover {
+    background: #333;
+  }
 }
 
 .btn--new {
   background: #fff;
-  color: #3a3a5c;
-  border-color: #c9d0e8;
+  color: #1a1a1a;
+  border-color: #ccc;
 }
+
 @media (hover: hover) {
   .btn--new:hover {
-    border-color: #5c5fef;
-    color: #5c5fef;
+    border-color: #1a1a1a;
   }
 }
 
 /* ── Prompt ──────────────────────────────────────────────────────────────── */
 .prompt {
-  color: #888;
+  color: #777;
   font-size: 1rem;
   margin-top: 1rem;
 }
@@ -368,8 +373,14 @@
 
   .phoneme-tile {
     min-width: 3rem;
-    height: 3rem;
-    font-size: 1.1rem;
+    height: 3.8rem;
+    font-size: 1.15rem;
+    padding: 0 0.8rem;
+  }
+
+  .tile-divider {
+    height: 2.5rem;
+    margin: 0 0.3rem;
   }
 
   .word-text {

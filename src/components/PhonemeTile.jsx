@@ -16,8 +16,8 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick }) {
   const classNames = [
     'phoneme-tile',
     `tile--${type}`,
-    selected ? 'tile--selected'  : '',
-    locked   ? 'tile--locked'    : '',
+    selected ? 'tile--selected' : '',
+    locked   ? 'tile--locked'   : '',
   ].filter(Boolean).join(' ');
 
   return (
@@ -28,7 +28,9 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick }) {
       aria-label={`phoneme ${label}${locked ? ', no swaps available' : ''}`}
     >
       {label}
-      {locked && <span className="lock-icon" aria-hidden="true">🔒</span>}
+      {locked && (
+        <span className="material-icons lock-icon" aria-hidden="true">lock</span>
+      )}
     </button>
   );
 }

@@ -1,6 +1,6 @@
+import { Fragment } from 'react';
 import PhonemeTile from './PhonemeTile';
-import { getValidSwaps } from '../data/words';
-import { trickyWords } from '../data/words';
+import { getValidSwaps, trickyWords } from '../data/words';
 
 /**
  * Renders the current word as a row of phoneme tiles.
@@ -16,27 +16,32 @@ export default function WordDisplay({ phonemes, word, selectedIndex, onSelectInd
 
   return (
     <div className="word-display">
-      {isTricky && (
-        <div className="tricky-badge" aria-label="Tricky word">
-          Tricky word
-        </div>
-      )}
-      <div className={`tile-row ${isTricky ? 'tile-row--tricky' : ''}`}>
+      <div className="tile-row">
         {phonemes.map((phoneme, i) => {
           const swaps = getValidSwaps(phonemes, i);
           const locked = swaps.length === 0;
           return (
-            <PhonemeTile
-              key={i}
-              phoneme={phoneme}
-              selected={selectedIndex === i}
-              locked={locked}
-              onClick={() => !locked && onSelectIndex(i)}
-            />
+            <Fragment key={i}>
+              {i > 0 && <div className="tile-divider" aria-hidden="true" />}
+              <PhonemeTile
+                phoneme={phoneme}
+                selected={selectedIndex === i}
+                locked={locked}
+                onClick={() => !locked && onSelectIndex(i)}
+              />
+            </Fragment>
           );
         })}
       </div>
-      <div className="word-text">{word}</div>
+
+      <div className="word-label">
+        <div className="word-text">{word}</div>
+        {isTricky && (
+          <div className="tricky-label" aria-label="Tricky word">
+            <strong>Tricky</strong>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
