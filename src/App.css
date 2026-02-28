@@ -4,15 +4,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 1rem 4rem;
+  padding: 1.5rem 1rem 5rem;
 }
 
 .app-header h1 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.5px;
   color: #1a1a2e;
-  margin: 0 0 2rem;
+  margin: 0 0 1.5rem;
   text-align: center;
 }
 
@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1.75rem;
   width: 100%;
   max-width: 640px;
 }
@@ -28,10 +28,11 @@
 /* ── Phoneme count selector ──────────────────────────────────────────────── */
 .count-selector {
   text-align: center;
+  width: 100%;
 }
 
 .count-selector__label {
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #555;
   margin: 0 0 0.75rem;
@@ -47,21 +48,26 @@
 }
 
 .count-btn {
-  width: 2.8rem;
-  height: 2.8rem;
+  /* 48×48px — above the 44px touch minimum */
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   border: 2px solid #c9d0e8;
   background: #fff;
   font-size: 1.1rem;
   font-weight: 700;
   color: #3a3a5c;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  transition: background 0.15s, border-color 0.15s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.count-btn:hover:not(:disabled) {
-  background: #e6eaff;
-  border-color: #6c6fff;
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .count-btn:hover:not(:disabled) {
+    background: #e6eaff;
+    border-color: #6c6fff;
+    transform: translateY(-2px);
+  }
 }
 
 .count-btn--active {
@@ -81,6 +87,7 @@
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .tricky-badge {
@@ -91,7 +98,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  padding: 0.2rem 0.7rem;
+  padding: 0.25rem 0.8rem;
   border-radius: 999px;
 }
 
@@ -107,7 +114,7 @@
 }
 
 .word-text {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #3a3a5c;
   letter-spacing: 0.02em;
@@ -116,12 +123,13 @@
 /* ── Phoneme tiles ────────────────────────────────────────────────────────── */
 .phoneme-tile {
   position: relative;
-  min-width: 3rem;
-  height: 3.4rem;
-  padding: 0 0.6rem;
+  /* ~52px — comfortably above the 44px touch minimum */
+  min-width: 3.25rem;
+  height: 3.25rem;
+  padding: 0 0.65rem;
   border-radius: 10px;
   border: 2px solid transparent;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
@@ -129,6 +137,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Vowel tiles – warm amber */
@@ -137,10 +147,12 @@
   border-color: #f5c842;
   color: #7a5700;
 }
-.tile--vowel:hover:not(.tile--locked) {
-  background: #ffe99a;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(245, 200, 66, 0.4);
+@media (hover: hover) {
+  .tile--vowel:hover:not(.tile--locked) {
+    background: #ffe99a;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(245, 200, 66, 0.4);
+  }
 }
 
 /* Consonant tiles – soft blue */
@@ -149,10 +161,12 @@
   border-color: #60a5fa;
   color: #1e3a8a;
 }
-.tile--consonant:hover:not(.tile--locked) {
-  background: #bfdbfe;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+@media (hover: hover) {
+  .tile--consonant:hover:not(.tile--locked) {
+    background: #bfdbfe;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+  }
 }
 
 /* Digraph tiles – soft purple */
@@ -161,10 +175,12 @@
   border-color: #a78bfa;
   color: #4c1d95;
 }
-.tile--digraph:hover:not(.tile--locked) {
-  background: #ddd6fe;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+@media (hover: hover) {
+  .tile--digraph:hover:not(.tile--locked) {
+    background: #ddd6fe;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+  }
 }
 
 /* Selected state */
@@ -211,19 +227,28 @@
 .swap-panel__close {
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #999;
-  padding: 0.1rem 0.4rem;
-  border-radius: 6px;
+  /* 44×44 tap target */
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
-.swap-panel__close:hover {
-  background: #f0f0f0;
-  color: #333;
+@media (hover: hover) {
+  .swap-panel__close:hover {
+    background: #f0f0f0;
+    color: #333;
+  }
 }
 
 .swap-panel__options {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
   gap: 0.5rem;
 }
 
@@ -231,17 +256,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  padding: 0.5rem 0.75rem;
+  gap: 0.2rem;
+  /* min 44px height */
+  padding: 0.65rem 0.5rem;
   border-radius: 10px;
   border: 2px solid transparent;
   transition: transform 0.12s, box-shadow 0.12s;
-  min-width: 3.5rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.swap-option:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+@media (hover: hover) {
+  .swap-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
 }
 
 .swap-option--vowel    { background: #fff3cd; border-color: #f5c842; color: #7a5700; }
@@ -254,7 +283,7 @@
 }
 
 .swap-option__word {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
   opacity: 0.75;
 }
@@ -263,22 +292,29 @@
 .word-actions {
   display: flex;
   gap: 0.75rem;
-  flex-wrap: wrap;
+  width: 100%;
   justify-content: center;
 }
 
 .btn {
-  padding: 0.6rem 1.4rem;
-  border-radius: 10px;
+  /* min 44px height */
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   border: 2px solid transparent;
   font-size: 1rem;
   font-weight: 700;
   transition: transform 0.12s, box-shadow 0.12s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  flex: 1;
+  max-width: 10rem;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+@media (hover: hover) {
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
 }
 
 .btn--speak {
@@ -286,8 +322,8 @@
   color: #fff;
   border-color: #5c5fef;
 }
-.btn--speak:hover {
-  background: #4749d4;
+@media (hover: hover) {
+  .btn--speak:hover { background: #4749d4; }
 }
 
 .btn--new {
@@ -295,9 +331,11 @@
   color: #3a3a5c;
   border-color: #c9d0e8;
 }
-.btn--new:hover {
-  border-color: #5c5fef;
-  color: #5c5fef;
+@media (hover: hover) {
+  .btn--new:hover {
+    border-color: #5c5fef;
+    color: #5c5fef;
+  }
 }
 
 /* ── Prompt ──────────────────────────────────────────────────────────────── */
@@ -305,4 +343,40 @@
   color: #888;
   font-size: 1rem;
   margin-top: 1rem;
+}
+
+/* ── Small screens (≤ 400px) ─────────────────────────────────────────────── */
+@media (max-width: 400px) {
+  .app {
+    padding: 1rem 0.75rem 5rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
+  }
+
+  .app-main {
+    gap: 1.25rem;
+  }
+
+  .count-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1rem;
+  }
+
+  .phoneme-tile {
+    min-width: 3rem;
+    height: 3rem;
+    font-size: 1.1rem;
+  }
+
+  .word-text {
+    font-size: 1.3rem;
+  }
+
+  .swap-panel__options {
+    grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+  }
 }
