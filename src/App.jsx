@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
-import PhonemeCountSelector from './components/PhonemeCountSelector';
+import LandingScreen from './screens/LandingScreen';
+import LearnCountScreen from './screens/LearnCountScreen';
 import WordDisplay from './components/WordDisplay';
 import SwapOptions from './components/SwapOptions';
-import { randomWordByCount, getValidSwaps } from './data/words';
+import { randomNonTrickyWordByCount, getValidSwaps } from './data/words';
 import './App.css';
 
 function speakWord(word) {
@@ -13,29 +14,37 @@ function speakWord(word) {
   window.speechSynthesis.speak(utt);
 }
 
-export default function App() {
-  const [phonemeCount,   setPhonemeCount]   = useState(null);
-  const [currentEntry,   setCurrentEntry]   = useState(null);
-  const [selectedIndex,  setSelectedIndex]  = useState(null);
-  const [validSwaps,     setValidSwaps]     = useState([]);
+// Screen IDs
+// 'landing' | 'learn-count' | 'learn-word' | 'game'
 
-  // ── Pick a count → load a random starting word ───────────────────────────
-  const handleCountSelect = useCallback((n) => {
-    const entry = randomWordByCount(n);
+export default function App() {
+  const [screen,        setScreen]        = useState('landing');
+  const [phonemeCount,  setPhonemeCount]  = useState(3);
+  const [currentEntry,  setCurrentEntry]  = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [validSwaps,    setValidSwaps]    = useState([]);
+
+  // ── Start a learn-mode session with the chosen count ─────────────────────
+  const handleBeginLearn = useCallback((count) => {
+    const entry = randomNonTrickyWordByCount(count);
     if (!entry) return;
-    setPhonemeCount(n);
+    setPhonemeCount(count);
     setCurrentEntry(entry);
     setSelectedIndex(null);
     setValidSwaps([]);
+    setScreen('learn-word');
   }, []);
 
-  // ── Load a new random word with the same count ────────────────────────────
+  // ── Load a new word with the same count ───────────────────────────────────
   const handleNewWord = useCallback(() => {
-    if (phonemeCount === null) return;
-    handleCountSelect(phonemeCount);
-  }, [phonemeCount, handleCountSelect]);
+    const entry = randomNonTrickyWordByCount(phonemeCount);
+    if (!entry) return;
+    setCurrentEntry(entry);
+    setSelectedIndex(null);
+    setValidSwaps([]);
+  }, [phonemeCount]);
 
-  // ── User clicks a phoneme tile ────────────────────────────────────────────
+  // ── User taps a phoneme tile ──────────────────────────────────────────────
   const handleSelectIndex = useCallback((i) => {
     if (!currentEntry) return;
     if (selectedIndex === i) {
@@ -48,13 +57,12 @@ export default function App() {
     setValidSwaps(swaps);
   }, [currentEntry, selectedIndex]);
 
-  // ── User picks a swap ─────────────────────────────────────────────────────
+  // ── Commit a swap (from SwapOptions panel or flip-card swipe) ─────────────
   const handleSwap = useCallback(({ phoneme, word }) => {
     if (!currentEntry || selectedIndex === null) return;
     const newPhonemes = [...currentEntry.phonemes];
     newPhonemes[selectedIndex] = phoneme;
-    const newEntry = { word, phonemes: newPhonemes };
-    setCurrentEntry(newEntry);
+    setCurrentEntry({ word, phonemes: newPhonemes });
     setSelectedIndex(null);
     setValidSwaps([]);
     speakWord(word);
@@ -65,18 +73,64 @@ export default function App() {
     setValidSwaps([]);
   }, []);
 
+  // ── Screen routing ────────────────────────────────────────────────────────
+
+  if (screen === 'landing') {
+    return (
+      <div className="app">
+        <LandingScreen
+          onLearn={() => setScreen('learn-count')}
+          onGame={() => setScreen('game')}
+        />
+      </div>
+    );
+  }
+
+  if (screen === 'learn-count') {
+    return (
+      <div className="app">
+        <LearnCountScreen
+          onBegin={handleBeginLearn}
+          onBack={() => setScreen('landing')}
+        />
+      </div>
+    );
+  }
+
+  if (screen === 'game') {
+    return (
+      <div className="app">
+        <div className="game-placeholder">
+          <button
+            className="back-btn"
+            onClick={() => setScreen('landing')}
+            aria-label="Back to home"
+          >
+            <span className="material-icons" aria-hidden="true">arrow_back</span>
+            Back
+          </button>
+          <p className="game-placeholder__text">Game mode coming soon!</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── learn-word screen ─────────────────────────────────────────────────────
   return (
     <div className="app">
       <header className="app-header">
+        <button
+          className="back-btn"
+          onClick={() => setScreen('learn-count')}
+          aria-label="Back to count selector"
+        >
+          <span className="material-icons" aria-hidden="true">arrow_back</span>
+          Back
+        </button>
         <h1>Word Sounds</h1>
       </header>
 
       <main className="app-main">
-        <PhonemeCountSelector
-          selected={phonemeCount}
-          onSelect={handleCountSelect}
-        />
-
         {currentEntry && (
           <>
             <WordDisplay
@@ -112,10 +166,6 @@ export default function App() {
               </button>
             </div>
           </>
-        )}
-
-        {!currentEntry && (
-          <p className="prompt">Pick a number above to begin.</p>
         )}
       </main>
     </div>

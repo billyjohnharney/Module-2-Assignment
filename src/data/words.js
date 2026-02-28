@@ -515,3 +515,13 @@ export function randomWordByCount(count) {
   if (!pool || pool.length === 0) return null;
   return pool[Math.floor(Math.random() * pool.length)];
 }
+
+/**
+ * Pick a random non-tricky word entry with exactly `count` phonemes.
+ * Falls back to any word if all words are tricky.
+ */
+export function randomNonTrickyWordByCount(count) {
+  const pool = (wordsByCount[count] ?? []).filter(e => !trickyWords.has(e.word));
+  if (pool.length === 0) return randomWordByCount(count);
+  return pool[Math.floor(Math.random() * pool.length)];
+}

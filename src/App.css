@@ -13,7 +13,7 @@
   font-weight: 800;
   letter-spacing: -0.5px;
   color: #1a1a1a;
-  margin: 0 0 1.5rem;
+  margin: 0;
   text-align: center;
 }
 
@@ -465,6 +465,303 @@
   margin-top: 1rem;
 }
 
+/* ── Back button (shared across screens) ─────────────────────────────────── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #555;
+  padding: 0.4rem 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .back-btn:hover {
+    color: #1a1a1a;
+  }
+}
+
+.back-btn .material-icons {
+  font-size: 1.15rem;
+}
+
+/* ── Landing screen ───────────────────────────────────────────────────────── */
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: 640px;
+  padding-top: 2rem;
+}
+
+.landing__header {
+  text-align: center;
+}
+
+.landing__title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #1a1a1a;
+  margin: 0 0 0.4rem;
+}
+
+.landing__subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Mode cards — side by side on wide screens, stacked on narrow */
+.landing__modes {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mode-card {
+  flex: 1 1 10rem;
+  max-width: 16rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2rem 1.5rem;
+  background: #fff;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: transform 0.14s, box-shadow 0.14s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .mode-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15), 0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.mode-card:active {
+  transform: translateY(-1px);
+}
+
+.mode-card__icon {
+  font-size: 2.8rem;
+  color: #1a1a1a;
+}
+
+.mode-card__name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.2px;
+}
+
+.mode-card__desc {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #666;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── Learn-count screen ───────────────────────────────────────────────────── */
+.learn-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 640px;
+  padding-top: 1rem;
+}
+
+.learn-count__header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.learn-count__title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0;
+  text-align: center;
+}
+
+.learn-count__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.learn-count__hint {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+  text-align: center;
+}
+
+.learn-count__word-count {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #555;
+  margin: 0;
+  text-align: center;
+}
+
+/* ── Count flip card ──────────────────────────────────────────────────────── */
+/* Wrapper: arrow — card — arrow stacked vertically */
+.count-flip-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Arrow buttons above and below the card */
+.count-flip-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.12s, box-shadow 0.12s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .count-flip-arrow:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.count-flip-arrow .material-icons {
+  font-size: 1.5rem;
+}
+
+/* The card — shares .tile__top / .tile__mid-line / .tile__bottom internals */
+.count-flip-card {
+  position: relative;
+  width: 7rem;
+  height: 9rem;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18), 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Two-half grid matching .tile--selected */
+  display: grid;
+  grid-template-rows: 1fr 1px 1fr;
+  overflow: hidden;
+  perspective: 800px;
+}
+
+/* Slightly larger half-label inside the count card */
+.count-flip-card .tile__top,
+.count-flip-card .tile__bottom {
+  border-radius: 0; /* card itself already has rounded corners */
+}
+
+.count-flip-card .tile__top {
+  border-radius: 10px 10px 0 0;
+}
+
+.count-flip-card .tile__bottom {
+  border-radius: 0 0 10px 10px;
+}
+
+/* Flap inside count card inherits .tile__flap styles; just needs a bg match */
+.count-flip-card .tile__flap-face {
+  background: #fff;
+}
+
+/* The number label inside the count card */
+.count-flip-label {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Allow the count card half to be larger */
+.count-flip-card__half {
+  padding: 0.35rem 0;
+}
+
+/* ── Begin button ─────────────────────────────────────────────────────────── */
+.btn--begin {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+  padding: 0.85rem 3rem;
+  font-size: 1.1rem;
+  max-width: none;
+}
+
+@media (hover: hover) {
+  .btn--begin:hover {
+    background: #333;
+  }
+}
+
+/* ── Word screen back button row ─────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 1.5rem;
+}
+
+.app-header h1 {
+  flex: 1;
+  text-align: center;
+  /* keep the existing size/weight from the original rule */
+}
+
+/* ── Game placeholder ─────────────────────────────────────────────────────── */
+.game-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+  padding-top: 1rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+.game-placeholder__text {
+  width: 100%;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #888;
+  margin: 0;
+}
+
 /* ── Small screens (≤ 400px) ─────────────────────────────────────────────── */
 @media (max-width: 400px) {
   .app {
@@ -473,6 +770,9 @@
 
   .app-header h1 {
     font-size: 1.7rem;
+  }
+
+  .app-header {
     margin-bottom: 1rem;
   }
 
