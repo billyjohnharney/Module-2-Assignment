@@ -53,21 +53,18 @@
   height: 3rem;
   border-radius: 50%;
   border: 2px solid #ccc;
-  background: #fff;
+  background: #ebebeb;
   font-size: 1.1rem;
   font-weight: 700;
   color: #1a1a1a;
-  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  transition: border-color 0.15s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 @media (hover: hover) {
   .count-btn:hover:not(:disabled) {
-    background: #f5f5f5;
     border-color: #999;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -136,7 +133,6 @@
 /* ── Phoneme tiles ────────────────────────────────────────────────────────── */
 .phoneme-tile {
   position: relative;
-  /* Wide enough for the letter + padding; tall for a flip-clock card feel */
   min-width: 3.5rem;
   height: 4.5rem;
   padding: 0 1.1rem;
@@ -145,10 +141,8 @@
   font-size: 1.35rem;
   font-weight: 700;
   color: #000;
-  background: #ffffff;
-  /* Resting shadow — subtle depth on the grey background */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14), 0 1px 2px rgba(0, 0, 0, 0.08);
-  transition: transform 0.12s, box-shadow 0.12s;
+  background: #ebebeb;
+  transition: outline 0.1s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,51 +152,47 @@
   letter-spacing: 0.02em;
 }
 
-/* All tile types — white card, black text (no colour coding) */
+/* All tile types — match background, black text */
 .tile--vowel,
 .tile--consonant,
 .tile--digraph {
-  background: #ffffff;
+  background: #ebebeb;
   color: #000000;
 }
 
 @media (hover: hover) {
   .phoneme-tile:hover:not(.tile--locked) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18), 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: 1px solid rgba(0, 0, 0, 0.3);
   }
 }
 
-/* Selected — lifts off background, 5% scale, prominent shadow.
+/* Selected — lifts off background, 5% scale.
    Switches to a block grid so the two halves + mid-line fill the card. */
 .tile--selected {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.14);
-  /* Override flex so we can use a row-based grid for the flip-clock halves */
   display: grid;
   grid-template-rows: 1fr 1px 1fr;
   padding: 0;
   overflow: hidden;
-  /* 3-D perspective context for the flip flap */
   perspective: 600px;
 }
 
 .tile--selected.tile--vowel,
 .tile--selected.tile--consonant,
 .tile--selected.tile--digraph {
-  background: #ffffff;
+  background: #ebebeb;
   color: #000000;
 }
 
 /* ── Flip-clock halves ───────────────────────────────────────────────────── */
 
-/* Top half — empty at rest; acts as static backdrop during flip-down */
+/* Top half */
 .tile__top {
   display: flex;
-  align-items: flex-end;       /* content hangs from the centre line */
+  align-items: flex-end;
   justify-content: center;
   padding-bottom: 3px;
-  background: #f0f0f0;         /* slightly dimmer to signal "empty" */
+  background: #d8d8d8;
   border-radius: 6px 6px 0 0;
   overflow: hidden;
 }
@@ -213,13 +203,13 @@
   z-index: 3;
 }
 
-/* Bottom half — where the current phonic lives (smaller font) */
+/* Bottom half */
 .tile__bottom {
   display: flex;
-  align-items: flex-start;     /* content sits just below the centre line */
+  align-items: flex-start;
   justify-content: center;
   padding-top: 3px;
-  background: #ffffff;
+  background: #ebebeb;
   border-radius: 0 0 6px 6px;
   overflow: hidden;
   position: relative;
@@ -240,12 +230,10 @@
   position: absolute;
   left: 0;
   right: 0;
-  /* Children live in 3-D space */
   transform-style: preserve-3d;
   z-index: 10;
 }
 
-/* Flap that starts covering the bottom half and rotates upward */
 .tile__flap--up {
   top: 50%;
   height: 50%;
@@ -254,7 +242,6 @@
   animation: flip-up 0.32s ease-in-out forwards;
 }
 
-/* Flap that starts covering the top half and rotates downward */
 .tile__flap--down {
   top: 0;
   height: 50%;
@@ -263,20 +250,18 @@
   animation: flip-down 0.32s ease-in-out forwards;
 }
 
-/* Front and back faces of the flap */
 .tile__flap-face {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: #ebebeb;
   border-radius: inherit;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* Back face is pre-rotated 180° so it appears correct when the flap completes */
 .tile__flap-back {
   transform: rotateX(180deg);
 }
@@ -317,11 +302,10 @@
 /* ── Swap panel ──────────────────────────────────────────────────────────── */
 .swap-panel {
   width: 100%;
-  background: #fff;
+  background: #ebebeb;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .swap-panel__header {
@@ -353,7 +337,7 @@
 
 @media (hover: hover) {
   .swap-panel__close:hover {
-    background: #f0f0f0;
+    background: #d8d8d8;
     color: #333;
   }
 }
@@ -364,7 +348,7 @@
   gap: 0.5rem;
 }
 
-/* Swap options — same white card style */
+/* Swap options */
 .swap-option {
   display: flex;
   flex-direction: column;
@@ -373,25 +357,23 @@
   padding: 0.65rem 0.5rem;
   border-radius: 6px;
   border: none;
-  background: #fff;
+  background: #ebebeb;
   color: #000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition: outline 0.1s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 @media (hover: hover) {
   .swap-option:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    outline: 1px solid rgba(0, 0, 0, 0.3);
   }
 }
 
 .swap-option--vowel,
 .swap-option--consonant,
 .swap-option--digraph {
-  background: #ffffff;
+  background: #ebebeb;
   color: #000000;
 }
 
@@ -420,18 +402,10 @@
   border: 2px solid transparent;
   font-size: 1rem;
   font-weight: 700;
-  transition: transform 0.12s, box-shadow 0.12s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   flex: 1;
   max-width: 10rem;
-}
-
-@media (hover: hover) {
-  .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
 }
 
 .btn--speak {
@@ -447,7 +421,7 @@
 }
 
 .btn--new {
-  background: #fff;
+  background: #ebebeb;
   color: #1a1a1a;
   border-color: #ccc;
 }
@@ -536,11 +510,10 @@
   align-items: center;
   gap: 0.6rem;
   padding: 2rem 1.5rem;
-  background: #fff;
+  background: #ebebeb;
   border: none;
   border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
-  transition: transform 0.14s, box-shadow 0.14s;
+  transition: outline 0.1s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
@@ -548,18 +521,8 @@
 
 @media (hover: hover) {
   .mode-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15), 0 3px 8px rgba(0, 0, 0, 0.08);
+    outline: 1px solid rgba(0, 0, 0, 0.3);
   }
-}
-
-.mode-card:active {
-  transform: translateY(-1px);
-}
-
-.mode-card__icon {
-  font-size: 2.8rem;
-  color: #1a1a1a;
 }
 
 .mode-card__name {
@@ -626,7 +589,6 @@
 }
 
 /* ── Count flip card ──────────────────────────────────────────────────────── */
-/* Wrapper: arrow — card — arrow stacked vertically */
 .count-flip-wrap {
   display: flex;
   flex-direction: column;
@@ -634,7 +596,6 @@
   gap: 0.75rem;
 }
 
-/* Arrow buttons above and below the card */
 .count-flip-arrow {
   display: flex;
   align-items: center;
@@ -643,44 +604,26 @@
   height: 3rem;
   border-radius: 50%;
   border: 2px solid #ddd;
-  background: #fff;
+  background: #ebebeb;
   color: #1a1a1a;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.12s, box-shadow 0.12s;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-}
-
-@media (hover: hover) {
-  .count-flip-arrow:hover {
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
 }
 
 .count-flip-arrow .material-icons {
   font-size: 1.5rem;
 }
 
-/* The card — shares .tile__top / .tile__mid-line / .tile__bottom internals */
 .count-flip-card {
   position: relative;
   width: 7rem;
   height: 9rem;
   border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18), 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Two-half grid matching .tile--selected */
+  background: #ebebeb;
   display: grid;
   grid-template-rows: 1fr 1px 1fr;
   overflow: hidden;
   perspective: 800px;
-}
-
-/* Slightly larger half-label inside the count card */
-.count-flip-card .tile__top,
-.count-flip-card .tile__bottom {
-  border-radius: 0; /* card itself already has rounded corners */
 }
 
 .count-flip-card .tile__top {
@@ -691,12 +634,10 @@
   border-radius: 0 0 10px 10px;
 }
 
-/* Flap inside count card inherits .tile__flap styles; just needs a bg match */
 .count-flip-card .tile__flap-face {
-  background: #fff;
+  background: #ebebeb;
 }
 
-/* The number label inside the count card */
 .count-flip-label {
   font-size: 3rem;
   font-weight: 800;
@@ -705,7 +646,6 @@
   user-select: none;
 }
 
-/* Allow the count card half to be larger */
 .count-flip-card__half {
   padding: 0.35rem 0;
 }
@@ -739,7 +679,6 @@
 .app-header h1 {
   flex: 1;
   text-align: center;
-  /* keep the existing size/weight from the original rule */
 }
 
 /* ── Game placeholder ─────────────────────────────────────────────────────── */

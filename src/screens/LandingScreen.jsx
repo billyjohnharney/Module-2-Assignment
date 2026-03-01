@@ -18,9 +18,6 @@ export default function LandingScreen({ onLearn, onGame }) {
       <div className="landing__modes">
         {/* Learn mode card */}
         <Button className="mode-card mode-card--learn" onClick={onLearn}>
-          <span className="material-icons mode-card__icon" aria-hidden="true">
-            menu_book
-          </span>
           <span className="mode-card__name">Learn</span>
           <span className="mode-card__desc">
             Explore phonics at your own pace
@@ -29,9 +26,6 @@ export default function LandingScreen({ onLearn, onGame }) {
 
         {/* Game mode card */}
         <Button className="mode-card mode-card--game" onClick={onGame}>
-          <span className="material-icons mode-card__icon" aria-hidden="true">
-            sports_esports
-          </span>
           <span className="mode-card__name">Game</span>
           <span className="mode-card__desc">
             Challenge yourself with word games
