@@ -1,3 +1,4 @@
+import { Button } from '@base-ui/react';
 import { phonemeLabel, phonemeType } from '../data/phonemeDisplay';
 
 /**
@@ -15,13 +16,13 @@ export default function SwapOptions({ swaps, onSwap, onClose }) {
     <div className="swap-panel" role="region" aria-label="Swap options">
       <div className="swap-panel__header">
         <span>Replace with…</span>
-        <button className="swap-panel__close" onClick={onClose} aria-label="Close">✕</button>
+        <Button className="swap-panel__close" onClick={onClose} aria-label="Close">✕</Button>
       </div>
       <div className="swap-panel__options">
         {swaps.map(({ phoneme, word }) => {
           const type = phonemeType(phoneme);
           return (
-            <button
+            <Button
               key={phoneme}
               className={`swap-option swap-option--${type}`}
               onClick={() => onSwap({ phoneme, word })}
@@ -29,7 +30,7 @@ export default function SwapOptions({ swaps, onSwap, onClose }) {
             >
               <span className="swap-option__phoneme">{phonemeLabel[phoneme] ?? phoneme}</span>
               <span className="swap-option__word">{word}</span>
-            </button>
+            </Button>
           );
         })}
       </div>

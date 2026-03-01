@@ -3,7 +3,8 @@ import { Button } from '@base-ui/react';
 import LandingScreen from './screens/LandingScreen';
 import LearnCountScreen from './screens/LearnCountScreen';
 import WordDisplay from './components/WordDisplay';
-import { randomNonTrickyWordByCount } from './data/words';
+import SwapOptions from './components/SwapOptions';
+import { randomNonTrickyWordByCount, getValidSwaps } from './data/words';
 import './App.css';
 
 function speakWord(word) {
@@ -22,6 +23,7 @@ export default function App() {
   const [phonemeCount,  setPhonemeCount]  = useState(3);
   const [currentEntry,  setCurrentEntry]  = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [validSwaps,    setValidSwaps]    = useState([]);
 
   // ── Start a learn-mode session with the chosen count ─────────────────────
   const handleBeginLearn = useCallback((count) => {
@@ -30,6 +32,7 @@ export default function App() {
     setPhonemeCount(count);
     setCurrentEntry(entry);
     setSelectedIndex(null);
+    setValidSwaps([]);
     setScreen('learn-word');
   }, []);
 
@@ -39,26 +42,36 @@ export default function App() {
     if (!entry) return;
     setCurrentEntry(entry);
     setSelectedIndex(null);
+    setValidSwaps([]);
   }, [phonemeCount]);
 
   // ── User taps a phoneme tile ──────────────────────────────────────────────
   const handleSelectIndex = useCallback((i) => {
     if (!currentEntry) return;
-    setSelectedIndex(prev => prev === i ? null : i);
-  }, [currentEntry]);
+    if (selectedIndex === i) {
+      setSelectedIndex(null);
+      setValidSwaps([]);
+      return;
+    }
+    const swaps = getValidSwaps(currentEntry.phonemes, i);
+    setSelectedIndex(i);
+    setValidSwaps(swaps);
+  }, [currentEntry, selectedIndex]);
 
-  // ── Commit a swap (from Popover button or flip-card swipe) ────────────────
+  // ── Commit a swap (from SwapOptions panel or flip-card swipe) ─────────────
   const handleSwap = useCallback(({ phoneme, word }) => {
     if (!currentEntry || selectedIndex === null) return;
     const newPhonemes = [...currentEntry.phonemes];
     newPhonemes[selectedIndex] = phoneme;
     setCurrentEntry({ word, phonemes: newPhonemes });
     setSelectedIndex(null);
+    setValidSwaps([]);
     speakWord(word);
   }, [currentEntry, selectedIndex]);
 
   const handleClose = useCallback(() => {
     setSelectedIndex(null);
+    setValidSwaps([]);
   }, []);
 
   // ── Screen routing ────────────────────────────────────────────────────────
@@ -127,8 +140,15 @@ export default function App() {
               selectedIndex={selectedIndex}
               onSelectIndex={handleSelectIndex}
               onSwap={handleSwap}
-              onClose={handleClose}
             />
+
+            {selectedIndex !== null && (
+              <SwapOptions
+                swaps={validSwaps}
+                onSwap={handleSwap}
+                onClose={handleClose}
+              />
+            )}
 
             <div className="word-actions">
               <Button
