@@ -1,3 +1,5 @@
+import { Button } from '@base-ui/react';
+
 /**
  * Landing screen — entry point of the app.
  *
@@ -15,7 +17,7 @@ export default function LandingScreen({ onLearn, onGame }) {
 
       <div className="landing__modes">
         {/* Learn mode card */}
-        <button className="mode-card mode-card--learn" onClick={onLearn}>
+        <Button className="mode-card mode-card--learn" onClick={onLearn}>
           <span className="material-icons mode-card__icon" aria-hidden="true">
             menu_book
           </span>
@@ -23,10 +25,10 @@ export default function LandingScreen({ onLearn, onGame }) {
           <span className="mode-card__desc">
             Explore phonics at your own pace
           </span>
-        </button>
+        </Button>
 
         {/* Game mode card */}
-        <button className="mode-card mode-card--game" onClick={onGame}>
+        <Button className="mode-card mode-card--game" onClick={onGame}>
           <span className="material-icons mode-card__icon" aria-hidden="true">
             sports_esports
           </span>
@@ -34,7 +36,7 @@ export default function LandingScreen({ onLearn, onGame }) {
           <span className="mode-card__desc">
             Challenge yourself with word games
           </span>
-        </button>
+        </Button>
       </div>
     </div>
   );

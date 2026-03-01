@@ -1,3 +1,4 @@
+import { Button } from '@base-ui/react';
 import { phonemeLabel, phonemeType } from '../data/phonemeDisplay';
 import { useState, useRef, useEffect } from 'react';
 
@@ -17,7 +18,7 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick, swaps,
   const type  = phonemeType(phoneme);
 
   // Captured once when tile becomes selected so phoneme/swaps changes mid-flip don't disrupt
-  const capturedRef = useRef(null);
+  const [captured,     setCaptured]     = useState(null);
   const animating   = useRef(false);
   const touchStartY = useRef(null);
 
@@ -25,32 +26,30 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick, swaps,
   const [flipping,     setFlipping]     = useState(null); // null | 'up' | 'down'
   const [deselecting,  setDeselecting]  = useState(false);
 
-  // Reset all local state when tile is deselected
+  // Capture options when selected; reset all local state when deselected
   useEffect(() => {
-    if (!selected) {
-      capturedRef.current = null;
+    if (selected) {
+      setCaptured({
+        opts: [
+          { phoneme, label: phonemeLabel[phoneme] ?? phoneme },
+          ...(swaps ?? []).map(s => ({
+            phoneme: s.phoneme,
+            label:   phonemeLabel[s.phoneme] ?? s.phoneme,
+            word:    s.word,
+          })),
+        ],
+      });
+    } else {
+      setCaptured(null);
       setDisplayIndex(0);
       setFlipping(null);
       setDeselecting(false);
       animating.current = false;
     }
-  }, [selected]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]); // intentionally frozen on select — swaps/phoneme changes must not disrupt mid-flip
 
-  // Capture options the first render where the tile becomes selected
-  if (selected && !capturedRef.current) {
-    capturedRef.current = {
-      opts: [
-        { phoneme, label: phonemeLabel[phoneme] ?? phoneme },
-        ...(swaps ?? []).map(s => ({
-          phoneme: s.phoneme,
-          label:   phonemeLabel[s.phoneme] ?? s.phoneme,
-          word:    s.word,
-        })),
-      ],
-    };
-  }
-
-  const opts     = capturedRef.current?.opts ?? [{ phoneme, label }];
+  const opts     = captured?.opts ?? [{ phoneme, label }];
   const total    = opts.length;
   const cur      = opts[displayIndex] ?? opts[0];
   const curLabel = cur.label;
@@ -120,7 +119,7 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick, swaps,
   // ── Unselected render ──────────────────────────────────────────────────────
   if (!selected) {
     return (
-      <button
+      <Button
         className={cls}
         onClick={handleClick}
         aria-pressed={false}
@@ -130,13 +129,13 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick, swaps,
         {locked && (
           <span className="material-icons lock-icon" aria-hidden="true">lock</span>
         )}
-      </button>
+      </Button>
     );
   }
 
   // ── Selected render — flip-clock layout ────────────────────────────────────
   return (
-    <button
+    <Button
       className={cls}
       onClick={handleClick}
       onTouchStart={handleTouchStart}
@@ -176,6 +175,6 @@ export default function PhonemeTile({ phoneme, selected, locked, onClick, swaps,
           </div>
         </div>
       )}
-    </button>
+    </Button>
   );
 }

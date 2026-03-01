@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '@base-ui/react';
 import CountFlipCard from '../components/CountFlipCard';
 
 /**
@@ -15,14 +16,14 @@ export default function LearnCountScreen({ onBegin, onBack }) {
   return (
     <div className="learn-count">
       <header className="learn-count__header">
-        <button
+        <Button
           className="back-btn"
           onClick={onBack}
           aria-label="Back to home"
         >
           <span className="material-icons" aria-hidden="true">arrow_back</span>
           Back
-        </button>
+        </Button>
         <h2 className="learn-count__title">How many sounds?</h2>
       </header>
 
@@ -35,13 +36,13 @@ export default function LearnCountScreen({ onBegin, onBack }) {
           {count}-sound words
         </p>
 
-        <button
+        <Button
           className="btn btn--begin"
           onClick={() => onBegin(count)}
           aria-label={`Begin with ${count}-sound words`}
         >
           Begin
-        </button>
+        </Button>
       </div>
     </div>
   );

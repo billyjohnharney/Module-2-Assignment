@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Button } from '@base-ui/react';
 
 const MIN = 2;
 const MAX = 8;
@@ -48,13 +49,13 @@ export default function CountFlipCard({ value, onChange }) {
   return (
     <div className="count-flip-wrap">
       {/* Up arrow — also clickable on desktop */}
-      <button
+      <Button
         className="count-flip-arrow"
         onClick={() => doFlip('down')}
         aria-label="Fewer sounds"
       >
         <span className="material-icons">expand_less</span>
-      </button>
+      </Button>
 
       {/* The card itself */}
       <div
@@ -98,13 +99,13 @@ export default function CountFlipCard({ value, onChange }) {
       </div>
 
       {/* Down arrow */}
-      <button
+      <Button
         className="count-flip-arrow"
         onClick={() => doFlip('up')}
         aria-label="More sounds"
       >
         <span className="material-icons">expand_more</span>
-      </button>
+      </Button>
     </div>
   );
 }
