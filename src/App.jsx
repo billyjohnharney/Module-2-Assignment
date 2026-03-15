@@ -24,7 +24,6 @@ export default function App() {
   const [currentEntry,  setCurrentEntry]  = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [validSwaps,    setValidSwaps]    = useState([]);
-  const [currentPhase,  setCurrentPhase]  = useState(0);
 
   // ── Start a learn-mode session with the chosen count ─────────────────────
   const handleBeginLearn = useCallback((count) => {
@@ -34,7 +33,6 @@ export default function App() {
     setCurrentEntry(entry);
     setSelectedIndex(null);
     setValidSwaps([]);
-    setCurrentPhase(0);
     setScreen('learn-word');
   }, []);
 
@@ -45,7 +43,6 @@ export default function App() {
     setCurrentEntry(entry);
     setSelectedIndex(null);
     setValidSwaps([]);
-    setCurrentPhase(0);
   }, [phonemeCount]);
 
   // ── User taps a phoneme tile ──────────────────────────────────────────────
@@ -70,16 +67,9 @@ export default function App() {
     setSelectedIndex(null);
     setValidSwaps([]);
     speakWord(word);
-    setCurrentPhase(prev => Math.min(prev + 1, newPhonemes.length - 1));
   }, [currentEntry, selectedIndex]);
 
   const handleClose = useCallback(() => {
-    setSelectedIndex(null);
-    setValidSwaps([]);
-  }, []);
-
-  const handlePhaseChange = useCallback((i) => {
-    setCurrentPhase(i);
     setSelectedIndex(null);
     setValidSwaps([]);
   }, []);
@@ -150,8 +140,6 @@ export default function App() {
               selectedIndex={selectedIndex}
               onSelectIndex={handleSelectIndex}
               onSwap={handleSwap}
-              currentPhase={currentPhase}
-              onPhaseChange={handlePhaseChange}
             />
 
             {selectedIndex !== null && (

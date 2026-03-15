@@ -540,6 +540,43 @@
     margin-top: 4px;
   }
 
+  /* PHASE NAVIGATION ROW */
+  .phase-nav-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px 4px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+
+  .phase-nav-arrow {
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--text-dim);
+    padding: 6px 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .phase-nav-arrow:hover {
+    border-color: var(--green-bright);
+    color: var(--green-glow);
+  }
+
+  .phase-nav-arrow--next {
+    border-color: var(--green);
+    color: var(--green-bright);
+  }
+
+  .phase-nav-arrow--next:hover {
+    background: rgba(37,160,68,0.1);
+    box-shadow: 0 0 8px rgba(46,204,113,0.15);
+  }
+
   /* SCROLL INDICATOR */
   .scroll-hint {
     text-align: center;
@@ -610,6 +647,7 @@
 // ─── STATE ───────────────────────────────────────────────
 let stats = { cp: 0, vp: 0 };
 let checked = {};
+let activePhaseIndex = 0;
 
 // ─── KEYWORD DEFINITIONS ─────────────────────────────────
 const keywords = {
@@ -809,8 +847,9 @@ function renderPills() {
   container.innerHTML = phases.map((p, i) => {
     const total = p.items.length;
     const done = p.items.filter((_, j) => checked[`${p.id}-${j}`]).length;
-    const cls = done === total ? 'done' : done > 0 ? 'active' : '';
-    return `<div class="phase-pill ${cls}" onclick="scrollToPhase('${p.id}')">${p.title.split('—')[0].trim().replace(' Phase','').replace(' of Turn','')}</div>`;
+    const isComplete = done === total;
+    const cls = isComplete ? 'done' : i === activePhaseIndex ? 'active' : '';
+    return `<div class="phase-pill ${cls}" onclick="goToPhase(${i})">${p.title.split('—')[0].trim().replace(' Phase','').replace(' of Turn','')}</div>`;
   }).join('');
 }
 
@@ -820,28 +859,33 @@ function renderPhases() {
     const total = phase.items.length;
     const done = phase.items.filter((_, j) => checked[`${phase.id}-${j}`]).length;
     const isComplete = done === total;
-    const hasAny = done > 0;
-    const isOpen = !isComplete;
+    const isActive = pi === activePhaseIndex;
+
+    const sectionCls = [
+      'phase-section',
+      isComplete ? 'completed' : '',
+      isActive ? 'active open' : '',
+    ].filter(Boolean).join(' ');
 
     return `
-      <div class="phase-section ${isComplete ? 'completed' : hasAny ? 'active' : ''} ${isOpen ? 'open' : ''}" id="phase-${phase.id}">
-        <div class="phase-header" onclick="togglePhase('${phase.id}')">
+      <div class="${sectionCls}" id="phase-${phase.id}">
+        <div class="phase-header" onclick="goToPhase(${pi})">
           <div class="phase-header-left">
             <span class="phase-number">${String(pi + 1).padStart(2,'0')}</span>
             <span class="phase-title">${phase.title}</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <span class="phase-progress">${done}/${total}</span>
-            <span class="phase-chevron">▼</span>
+            ${isComplete ? '<span style="color:var(--green);font-size:11px">✓</span>' : `<span class="phase-chevron">${isActive ? '▲' : '▼'}</span>`}
           </div>
         </div>
-        <div class="phase-body">
+        ${isActive ? `<div class="phase-body">
           ${phase.items.map((item, j) => {
             const key = `${phase.id}-${j}`;
             const isChecked = checked[key];
             const hasKw = item.keywords && item.keywords.length > 0;
             return `
-              <div class="check-item ${isChecked ? 'checked' : ''} ${hasKw ? 'has-keyword' : ''}" onclick="toggleCheck('${key}')">
+              <div class="check-item ${isChecked ? 'checked' : ''} ${hasKw ? 'has-keyword' : ''}" onclick="toggleCheck('${phase.id}',${j})">
                 <div class="checkbox"></div>
                 <div class="item-content">
                   <div class="item-text">${item.text}</div>
@@ -851,30 +895,33 @@ function renderPhases() {
                 </div>
               </div>`;
           }).join('')}
-        </div>
+          <div class="phase-nav-row">
+            ${pi > 0 ? `<button class="phase-nav-arrow" onclick="goToPhase(${pi - 1})">← ${phases[pi - 1].title.split('—')[0].trim()}</button>` : '<span></span>'}
+            ${pi < phases.length - 1 ? `<button class="phase-nav-arrow phase-nav-arrow--next" onclick="goToPhase(${pi + 1})">${phases[pi + 1].title.split('—')[0].trim()} →</button>` : '<span></span>'}
+          </div>
+        </div>` : ''}
       </div>`;
   }).join('');
 }
 
 // ─── INTERACTIONS ─────────────────────────────────────────
-function toggleCheck(key) {
+function toggleCheck(phaseId, itemIndex) {
+  const key = `${phaseId}-${itemIndex}`;
   checked[key] = !checked[key];
+  // Auto-advance when all items in the active phase are checked
+  const phase = phases[activePhaseIndex];
+  const allDone = phase.items.every((_, j) => checked[`${phase.id}-${j}`]);
+  if (allDone && activePhaseIndex < phases.length - 1) {
+    activePhaseIndex++;
+  }
   render();
 }
 
-function togglePhase(id) {
-  const el = document.getElementById(`phase-${id}`);
-  el.classList.toggle('open');
-  el.querySelector('.phase-chevron').style.transform =
-    el.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-}
-
-function scrollToPhase(id) {
-  const el = document.getElementById(`phase-${id}`);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (!el.classList.contains('open')) el.classList.add('open');
-  }
+function goToPhase(index) {
+  activePhaseIndex = index;
+  render();
+  const el = document.getElementById(`phase-${phases[index].id}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function adjustStat(key, delta) {
@@ -884,6 +931,7 @@ function adjustStat(key, delta) {
 
 function resetTurn() {
   checked = {};
+  activePhaseIndex = 0;
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
